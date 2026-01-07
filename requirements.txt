@@ -1,8 +1,8 @@
 torch
+torchaudio
 transformers
 datasets
 peft
 accelerate
 jiwer
-librosa
 scikit-learn
