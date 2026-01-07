@@ -1,1 +1,1 @@
-# Whisper Codemix Lora
+# Whisper Tamil Lora
