@@ -53,7 +53,9 @@ for ex in dataset:
     with torch.no_grad():
         generated_ids = model.generate(
             inputs["input_features"].to(device),
-            max_new_tokens=128
+            max_new_tokens=64,
+            num_beams=1,
+            do_sample=False
         )
 
     pred = processor.decode(
