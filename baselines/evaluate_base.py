@@ -9,7 +9,7 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 print("Loading test dataset...")
 dataset = load_dataset(
     "json",
-    data_files="data/test.json",
+    data_files="scripts/data/test.json",
     split="train"
 )
 
