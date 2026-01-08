@@ -13,7 +13,7 @@ base_model = WhisperForConditionalGeneration.from_pretrained(
 
 model = PeftModel.from_pretrained(
     base_model,
-    "outputs/lora-whisper-ta"
+    "outputs/lora-whisper-small"
 ).to("cuda")
 
 dataset = load_dataset(
