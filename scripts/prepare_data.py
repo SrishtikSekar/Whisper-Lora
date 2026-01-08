@@ -1,36 +1,66 @@
+from datasets import load_dataset
 import json
-import os
+import random
+from pathlib import Path
 
-def prepare_split(split_name):
-    audio_dir = f"dataset/{split_name}/audio"
-    text_dir = f"dataset/{split_name}/transcripts"
-    output_file = f"data/{split_name}_all.json"
+# ---------------- CONFIG ---------------- #
+LANG = "ta"
+TOTAL_SAMPLES = 1500
+TRAIN_RATIO = 0.8
+VAL_RATIO = 0.1
+SEED = 42
 
-    data = []
+OUTPUT_DIR = Path("data")
+OUTPUT_DIR.mkdir(exist_ok=True)
+# ---------------------------------------- #
 
-    for fname in os.listdir(audio_dir):
-        if not fname.endswith(".wav"):
-            continue
+random.seed(SEED)
 
-        audio_path = os.path.join(audio_dir, fname)
-        txt_path = os.path.join(text_dir, fname.replace(".wav", ".txt"))
+print("Loading Common Voice Tamil (subset, non-streaming)...")
 
-        if not os.path.exists(txt_path):
-            continue
+# 🔑 THIS IS THE KEY CHANGE
+dataset = load_dataset(
+    "fsicoli/common_voice_19_0",
+    LANG,
+    split=f"train[:{TOTAL_SAMPLES}]"
+)
 
-        with open(txt_path, "r", encoding="utf-8") as f:
-            text = f.read().strip()
+samples = []
 
-        data.append({
-            "audio": audio_path,
-            "text": text
-        })
+for example in dataset:
+    if not example.get("sentence"):
+        continue
 
-    with open(output_file, "w", encoding="utf-8") as f:
+    audio = example.get("audio")
+    if not isinstance(audio, dict) or "path" not in audio:
+        continue
+
+    samples.append({
+        "audio": audio["path"],
+        "text": example["sentence"]
+    })
+
+print(f"Collected {len(samples)} samples")
+
+random.shuffle(samples)
+
+train_end = int(TRAIN_RATIO * len(samples))
+val_end = train_end + int(VAL_RATIO * len(samples))
+
+train = samples[:train_end]
+val = samples[train_end:val_end]
+test = samples[val_end:]
+
+def save_json(data, path):
+    with open(path, "w", encoding="utf-8") as f:
         for item in data:
             f.write(json.dumps(item, ensure_ascii=False) + "\n")
 
-    print(f"{split_name}: {len(data)} samples saved")
+save_json(train, OUTPUT_DIR / "train.json")
+save_json(val, OUTPUT_DIR / "val.json")
+save_json(test, OUTPUT_DIR / "test.json")
 
-prepare_split("train")
-prepare_split("test")
+print("Saved:")
+print(f"Train: {len(train)}")
+print(f"Val:   {len(val)}")
+print(f"Test:  {len(test)}")
