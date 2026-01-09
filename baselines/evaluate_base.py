@@ -62,4 +62,4 @@ base_wer = wer(refs, preds)
 with open("baselines/base_wer.txt", "w") as f:
     f.write(f"Base Whisper-small WER: {base_wer * 100:.2f}%\n")
 
-print(f"\n✅ Base WER: {base_wer * 100:.2f}%")
+print(f"\n Base WER: {base_wer * 100:.2f}%")
