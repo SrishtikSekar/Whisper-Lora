@@ -1,5 +1,5 @@
 
-# Whisper Tamil ASR Fine-Tuning using LoRA
+# Whisper ASR Fine-Tuning using LoRA
 
 Fine-tuning OpenAI’s Whisper model for **Tamil Automatic Speech Recognition (ASR)** using **Low-Rank Adaptation (LoRA)** on a small subset of the **Common Voice Tamil** dataset.
 
