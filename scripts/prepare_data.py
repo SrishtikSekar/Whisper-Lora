@@ -2,7 +2,7 @@ from datasets import load_dataset
 import json
 import random
 from pathlib import Path
-
+from whisper_normalizer.indic import TamilNormalizer
 LANG = "ta"
 TOTAL_SAMPLES = 5500
 TRAIN_RATIO = 0.8
@@ -36,7 +36,7 @@ for example in dataset:
 
     samples.append({
         "audio": audio["path"],
-        "text": example["sentence"]
+        "text": TamilNormalizer(example["sentence"])
     })
 
 print(f"Collected {len(samples)} samples")
