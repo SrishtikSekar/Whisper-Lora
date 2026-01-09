@@ -21,7 +21,8 @@ print("Loading Common Voice Tamil (subset, non-streaming)...")
 dataset = load_dataset(
     "fsicoli/common_voice_19_0",
     LANG,
-    split=f"train[:{TOTAL_SAMPLES}]"
+    split=f"train[:{TOTAL_SAMPLES}]",
+    trust_remote_code=True
 )
 
 samples = []
