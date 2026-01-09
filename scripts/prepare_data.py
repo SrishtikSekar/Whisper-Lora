@@ -3,22 +3,21 @@ import json
 import random
 from pathlib import Path
 
-# ---------------- CONFIG ---------------- #
 LANG = "ta"
-TOTAL_SAMPLES = 1500
+TOTAL_SAMPLES = 5500
 TRAIN_RATIO = 0.8
 VAL_RATIO = 0.1
 SEED = 42
 
 OUTPUT_DIR = Path("data")
 OUTPUT_DIR.mkdir(exist_ok=True)
-# ---------------------------------------- #
+
 
 random.seed(SEED)
 
 print("Loading Common Voice Tamil (subset, non-streaming)...")
 
-# 🔑 THIS IS THE KEY CHANGE
+
 dataset = load_dataset(
     "fsicoli/common_voice_19_0",
     LANG,
